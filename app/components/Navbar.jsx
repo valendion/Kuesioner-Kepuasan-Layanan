@@ -28,6 +28,7 @@ const Navbar = () => {
       px={4}
       w={"100%"}
       position={"fixed"}
+      zIndex={2}
     >
       <Flex h={16} alignItems="center">
         <IconButton
@@ -43,7 +44,7 @@ const Navbar = () => {
         <Spacer />
         <HStack display={{ base: "none", md: "flex" }}>
           {menuNavbar.map((menu) => (
-            <MenuLink key={menu} menu={menu} />
+            <MenuLink key={menu.name} name={menu.name} path={menu.path} />
           ))}
         </HStack>
 
@@ -56,7 +57,7 @@ const Navbar = () => {
         <Box pb={4} display={{ md: "none" }}>
           <VStack as={"nav"} spacing={4}>
             {menuNavbar.map((menu) => (
-              <MenuLink key={menu} menu={menu} />
+              <MenuLink key={menu.name} name={menu.name} path={menu.path} />
             ))}
           </VStack>
         </Box>

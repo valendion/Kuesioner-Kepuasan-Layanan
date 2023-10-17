@@ -1,7 +1,7 @@
 import { Link } from "@chakra-ui/next-js";
 import { useColorModeValue } from "@chakra-ui/react";
 
-const MenuLink = ({ menu }) => {
+const MenuLink = ({ name, path }) => {
   const color = useColorModeValue("gray.200", "gray.700");
   return (
     <Link
@@ -12,9 +12,9 @@ const MenuLink = ({ menu }) => {
         textDecoration: "none",
         bg: color,
       }}
-      href={"#"}
+      href={path}
     >
-      {menu}
+      {name}
     </Link>
   );
 };
