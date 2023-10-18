@@ -14,7 +14,11 @@ export const useValidation = ({ handleSubmit }) => {
       answers: Array.from({ length: questionData.length }, () => ""),
     },
     validationSchema: yup.object({
-      age: yup.number().required("Umur wajib diisi"),
+      age: yup
+        .number()
+        .integer("Harus berupa angka bulat")
+        .max(99, "Angka tidak boleh lebih dari 2 digit")
+        .required("Umur wajib diisi"),
       gender: yup.string().required("Jenis kelamin wajib dipilih"),
       education: yup.string().required("Pendidikan wajib dipilih"),
       occupation: yup.string().required("Pekerjaan wajib dipilih"),
