@@ -6,6 +6,7 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
+  Textarea,
 } from "@chakra-ui/react";
 import { questionData } from "../utils/contans";
 
@@ -41,6 +42,21 @@ const FormQuestion = ({ isLoading, handleForm, validation }) => {
           </FormErrorMessage>
         </FormControl>
       ))}
+
+      <FormControl isInvalid={validation.errors.suggestion}>
+        <FormLabel>Saran Anda</FormLabel>
+        <Textarea
+          placeholder="Masukkan saran anda"
+          size="md"
+          type="text"
+          name="suggestion"
+          onChange={handleForm}
+          value={validation.values.suggestion}
+          isDisabled={isLoading}
+        />
+
+        <FormErrorMessage>{validation.errors.suggestion}</FormErrorMessage>
+      </FormControl>
     </VStack>
   );
 };

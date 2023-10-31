@@ -8,6 +8,7 @@ import {
   Input,
   Select,
   FormErrorMessage,
+  Textarea,
 } from "@chakra-ui/react";
 
 const FormInput = ({ isLoading, handleForm, validation }) => {
@@ -116,7 +117,7 @@ const FormInput = ({ isLoading, handleForm, validation }) => {
 
       <FormControl isInvalid={validation.errors.services_received}>
         <FormLabel>Layanan yang diterima</FormLabel>
-        <Input
+        {/* <Input
           placeholder="Layanan yang diterima (KTP,Akta,Sertifikat,Poli Umum dll)"
           size="md"
           type="text"
@@ -124,7 +125,25 @@ const FormInput = ({ isLoading, handleForm, validation }) => {
           onChange={handleForm}
           value={validation.values.services_received}
           isDisabled={isLoading}
-        />
+        /> */}
+
+        <Select
+          placeholder="Pilih Layanan yang diterima"
+          value={validation.values.services_received}
+          onChange={handleForm}
+          name="services_received"
+          disabled={isLoading}
+        >
+          <option value="Poli Umum">Poli Umum</option>
+          <option value="Poli Gigi">Poli Gigi</option>
+          <option value="POlI KIA">Poli KIA</option>
+          <option value="Laboratorium">Laboratorium</option>
+          <option value="MTBS">MTBS</option>
+          <option value="Ruang Imunisasi">Ruang Imunisasi</option>
+          <option value="Loket pendaftaran / Rekam Medis">
+            Loket pendaftaran / Rekam Medis
+          </option>
+        </Select>
 
         <FormErrorMessage>
           {validation.errors.services_received}

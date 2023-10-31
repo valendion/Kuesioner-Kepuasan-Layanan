@@ -3,6 +3,16 @@ export const menuNavbar = [
   { name: "Conclusion", path: "/conclusion" },
 ];
 
+export const roomPublicHealth = [
+  "Poli Umum",
+  "Poli Gigi",
+  "Poli KIA",
+  "Laboratorium",
+  "MTBS",
+  "Ruang Imunisasi",
+  "Loket pendaftaran / Rekam Medis",
+];
+
 export const questionData = [
   {
     number: 1,

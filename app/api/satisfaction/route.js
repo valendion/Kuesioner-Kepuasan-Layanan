@@ -18,6 +18,7 @@ export const POST = async (request) => {
       occupation: body.occupation,
       services_received: body.services_received,
       answers: body.answers,
+      suggestion: body.suggestion,
     },
   });
   return NextResponse.json(patient);
