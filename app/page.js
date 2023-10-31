@@ -3,13 +3,12 @@ import { Container, Heading, Button, useToast } from "@chakra-ui/react";
 import FormInput from "./components/FormInput";
 import FormQuestion from "./components/FormQuestion";
 import { useValidation } from "./lib/formik/validation";
-import { totalPoint } from "./utils/count_point";
+import { changeArrayInt } from "./utils/count_point";
 import axios from "axios";
 
 export default function Home() {
   const toast = useToast();
   const handleSubmit = async (values) => {
-    console.log(values);
     if (values) {
       const {
         occupation,
@@ -19,6 +18,7 @@ export default function Home() {
         education,
         services_received,
         answers,
+        suggestion,
       } = values;
       let occupationChoice =
         occupation !== "Lainnya" ? occupation : otherOccupation;
@@ -28,8 +28,10 @@ export default function Home() {
         education,
         occupation: occupationChoice,
         services_received,
-        answers: totalPoint(answers),
+        answers: changeArrayInt(answers),
+        suggestion,
       };
+      console.log(data);
       try {
         const res = await axios.post("/api/satisfaction", data);
         if (res.status === 200) {
