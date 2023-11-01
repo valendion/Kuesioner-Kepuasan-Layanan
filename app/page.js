@@ -31,7 +31,6 @@ export default function Home() {
         answers: changeArrayInt(answers),
         suggestion,
       };
-      console.log(data);
       try {
         const res = await axios.post("/api/satisfaction", data);
         if (res.status === 200) {

@@ -136,13 +136,15 @@ const FormInput = ({ isLoading, handleForm, validation }) => {
         >
           <option value="Poli Umum">Poli Umum</option>
           <option value="Poli Gigi">Poli Gigi</option>
-          <option value="POlI KIA">Poli KIA</option>
+          <option value="Poli KIA">Poli KIA</option>
           <option value="Laboratorium">Laboratorium</option>
           <option value="MTBS">MTBS</option>
           <option value="Ruang Imunisasi">Ruang Imunisasi</option>
           <option value="Loket pendaftaran / Rekam Medis">
             Loket pendaftaran / Rekam Medis
           </option>
+          <option value="Apotek">Apotek</option>
+          <option value="UGD">UGD</option>
         </Select>
 
         <FormErrorMessage>
