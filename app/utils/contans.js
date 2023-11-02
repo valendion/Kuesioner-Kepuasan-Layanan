@@ -11,6 +11,8 @@ export const roomPublicHealth = [
   "MTBS",
   "Ruang Imunisasi",
   "Loket pendaftaran / Rekam Medis",
+  "Apotek",
+  "UGD",
 ];
 
 export const questionData = [

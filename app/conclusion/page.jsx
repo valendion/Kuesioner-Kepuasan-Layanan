@@ -21,6 +21,8 @@ export const Conclusion = () => {
   let mTBS = [];
   let ruangImunisasi = [];
   let loketPendaftaran = [];
+  let apotek = [];
+  let uGD = [];
   let oldAnswers = [];
   let allRoom = [];
 
@@ -47,6 +49,14 @@ export const Conclusion = () => {
       (service) =>
         service.services_received === "Loket pendaftaran / Rekam Medis"
     );
+
+    loketPendaftaran = oldAnswers.filter(
+      (service) => service.services_received === "Apotek"
+    );
+
+    loketPendaftaran = oldAnswers.filter(
+      (service) => service.services_received === "UGD"
+    );
     allRoom = [
       poliUmum,
       poliGigi,
@@ -55,6 +65,8 @@ export const Conclusion = () => {
       mTBS,
       ruangImunisasi,
       loketPendaftaran,
+      apotek,
+      uGD,
     ];
   }
 
@@ -64,7 +76,7 @@ export const Conclusion = () => {
         Daftar data kuisioner
       </Heading>
 
-      <Box overflowY="auto" maxHeight="600px">
+      <Box overflowY="auto" maxHeight="300px">
         {(isLoading && <ListCardSkeleton />) || (error && <ErrorPage />) || (
           <ListCard data={data} />
         )}
