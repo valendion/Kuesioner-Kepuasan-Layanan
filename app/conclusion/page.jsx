@@ -50,13 +50,11 @@ export const Conclusion = () => {
         service.services_received === "Loket pendaftaran / Rekam Medis"
     );
 
-    loketPendaftaran = oldAnswers.filter(
+    apotek = oldAnswers.filter(
       (service) => service.services_received === "Apotek"
     );
 
-    loketPendaftaran = oldAnswers.filter(
-      (service) => service.services_received === "UGD"
-    );
+    uGD = oldAnswers.filter((service) => service.services_received === "UGD");
     allRoom = [
       poliUmum,
       poliGigi,
