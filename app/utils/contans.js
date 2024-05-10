@@ -15,6 +15,8 @@ export const roomPublicHealth = [
   "UGD",
 ];
 
+export const valuePoint = ["Sangat Puas", "Puas", "Kurang Puas", "Tidak Puas"];
+
 export const questionData = [
   {
     number: 1,
@@ -24,7 +26,7 @@ export const questionData = [
       { answer: "Tidak sesuai", point: 1 },
       { answer: "Kurang sesuai", point: 2 },
       { answer: "Sesuai", point: 3 },
-      { answer: "Sangat  sesuai", point: 4 },
+      { answer: "Sangat sesuai", point: 4 },
     ],
   },
   {

@@ -16,6 +16,28 @@ export const totalPoint = (selectedAnswers) => {
   return totalPoints;
 };
 
+export const respondentAssessment = (polis) => {
+  const tidakPuas = polis.filter(
+    (item) =>
+      totalPoint(item.answers) / 9 >= 1 && totalPoint(item.answers) / 9 <= 1.9
+  ).length;
+
+  const kurangPuas = polis.filter(
+    (item) =>
+      totalPoint(item.answers) / 9 >= 2 && totalPoint(item.answers) / 9 <= 2.9
+  ).length;
+
+  const puas = polis.filter(
+    (item) =>
+      totalPoint(item.answers) / 9 >= 3 && totalPoint(item.answers) / 9 <= 3.9
+  ).length;
+
+  const sangatPuas = polis.filter(
+    (item) => totalPoint(item.answers) / 9 === 4
+  ).length;
+  return [sangatPuas, puas, kurangPuas, tidakPuas];
+};
+
 export const changeArrayInt = (selectedAnswers) => {
   const oldAnswers = [...selectedAnswers];
   const newAnswers = [];
