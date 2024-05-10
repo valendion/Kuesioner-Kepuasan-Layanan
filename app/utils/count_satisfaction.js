@@ -1,7 +1,7 @@
 export const countSatisfaction = (number) => {
   const numberSatisfaction = number / 9;
 
-  console.log("numberSatisfaction", numberSatisfaction);
+  // console.log("numberSatisfaction", numberSatisfaction);
   if (numberSatisfaction >= 1 && numberSatisfaction <= 1.9) {
     return "Tidak puas";
   } else if (numberSatisfaction >= 2 && numberSatisfaction <= 2.9) {
