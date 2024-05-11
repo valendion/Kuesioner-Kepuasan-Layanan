@@ -122,39 +122,41 @@ export const Conclusion = () => {
           </Stack>
         )) ||
           (error && <ErrorPage />) || (
-            <Doughnut
-              data={{
-                labels: roomPublicHealth,
-                datasets: [
-                  {
-                    label: "Jumlah orang yang memberikan penilaian",
-                    data: allRoom.map((data) => data.length),
-                    backgroundColor: [
-                      "#03AED2",
-                      "#CDE8E5",
-                      "#50AF95",
-                      "#f3ba2f",
-                      "#2a71d0",
-                      "#FA7070",
-                      "#F97300",
-                      "#A3D8FF",
-                      "#FFB1B1",
-                      "#874CCC",
-                    ],
-                    borderColor: "black",
-                    borderWidth: 2,
+            <Center>
+              <Doughnut
+                data={{
+                  labels: roomPublicHealth,
+                  datasets: [
+                    {
+                      label: "Jumlah orang yang memberikan penilaian",
+                      data: allRoom.map((data) => data.length),
+                      backgroundColor: [
+                        "#03AED2",
+                        "#CDE8E5",
+                        "#50AF95",
+                        "#f3ba2f",
+                        "#2a71d0",
+                        "#FA7070",
+                        "#F97300",
+                        "#A3D8FF",
+                        "#FFB1B1",
+                        "#874CCC",
+                      ],
+                      borderColor: "black",
+                      borderWidth: 2,
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    title: {
+                      display: true,
+                      text: "Responden di dapat dari November 2023 sampai sekarang",
+                    },
                   },
-                ],
-              }}
-              options={{
-                plugins: {
-                  title: {
-                    display: true,
-                    text: "Responden di dapat dari November 2023 sampai sekarang",
-                  },
-                },
-              }}
-            />
+                }}
+              />
+            </Center>
           )}
       </Box>
 
@@ -206,34 +208,36 @@ export const Conclusion = () => {
           </Stack>
         )) ||
           (error && <ErrorPage />) || (
-            <Pie
-              data={{
-                labels: valuePoint,
-                datasets: [
-                  {
-                    label: "Penilaian responden",
-                    data: assignmentPolis,
+            <Center>
+              <Pie
+                data={{
+                  labels: valuePoint,
+                  datasets: [
+                    {
+                      label: "Penilaian responden",
+                      data: assignmentPolis,
 
-                    backgroundColor: [
-                      "#50AF95",
-                      "#2a71d0",
-                      "#f3ba2f",
-                      "#FA7070",
-                    ],
-                    borderColor: "black",
-                    borderWidth: 2,
+                      backgroundColor: [
+                        "#50AF95",
+                        "#2a71d0",
+                        "#f3ba2f",
+                        "#FA7070",
+                      ],
+                      borderColor: "black",
+                      borderWidth: 2,
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    title: {
+                      display: true,
+                      text: `Penilaian Responden ${selectedValuePoli}`,
+                    },
                   },
-                ],
-              }}
-              options={{
-                plugins: {
-                  title: {
-                    display: true,
-                    text: `Penilaian Responden ${selectedValuePoli}`,
-                  },
-                },
-              }}
-            />
+                }}
+              />
+            </Center>
           )}
       </Box>
     </Container>
