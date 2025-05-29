@@ -4,6 +4,7 @@ import { totalPoint } from "../utils/count_point";
 
 const CardPatientSatisfaction = ({
   index,
+
   patient: {
     age,
     gender,
@@ -18,9 +19,9 @@ const CardPatientSatisfaction = ({
   return (
     <Card>
       <CardBody>
-        <Heading size={"md"} mb={2}>
+        {/* <Heading size={"md"} mb={2}>
           Orang ke - {index + 1}
-        </Heading>
+        </Heading> */}
         <Text>Umur : {age}</Text>
         <Text>Jenis Kelamin : {gender}</Text>
         <Text>Pendidikan : {education}</Text>

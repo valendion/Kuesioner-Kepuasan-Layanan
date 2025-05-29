@@ -8,6 +8,8 @@ import {
   Skeleton,
   SkeletonCircle,
   Select,
+  Divider,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import useSWR from "swr";
@@ -20,22 +22,51 @@ import ConclusionPeople from "../components/ConclusionPeople";
 import { roomPublicHealth, valuePoint } from "../utils/contans";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { Doughnut, Pie } from "react-chartjs-2";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { respondentAssessment } from "../utils/count_point";
+import Pagination from "../components/Pagination";
+
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const Conclusion = () => {
-  const { data, error, isLoading } = useSWR(`/api/satisfaction`, fetcher, {
-    refreshInterval: 3000,
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pageParam = searchParams.get("page");
+
+  const {
+    data: satisfactionData,
+    error: satisfactionError,
+    isLoading: isSatisfactionLoading,
+  } = useSWR(`/api/satisfaction`, fetcher, {
+    refreshInterval: 10000,
   });
 
+  const {
+    data: surveysData,
+    error: surveysError,
+    isLoading: isSurveysLoading,
+  } = useSWR(`/api/satisfaction/surveys?page=${pageParam || 1}`, fetcher);
+
+  const [page, setPage] = useState(1);
   const [selectedValuePoli, setSelectedValuePoli] = useState("Poli Umum");
+
+  useEffect(() => {
+    const initialPage = pageParam ? parseInt(pageParam) : 1;
+    setPage(initialPage);
+  }, [pageParam]);
+
+  const handlePageChange = (newPage) => {
+    const totalPages = surveysData?.pagination?.totalPages || 1;
+    if (newPage < 1 || newPage > totalPages) return;
+
+    setPage(newPage);
+    const params = new URLSearchParams(searchParams);
+    params.set("page", newPage.toString());
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
 
   const handleChangePoli = (event) => {
     setSelectedValuePoli(event.target.value);
-  };
-
-  const getResponseRespondents = (namePoli) => {
-    return;
   };
 
   ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -54,8 +85,8 @@ export const Conclusion = () => {
 
   let assignmentPolis = [];
 
-  if (!isLoading && !error) {
-    oldAnswers = [...data];
+  if (!isSatisfactionLoading && !satisfactionError) {
+    oldAnswers = [...satisfactionData];
     poliUmum = oldAnswers.filter(
       (service) => service.services_received === "Poli Umum"
     );
@@ -109,7 +140,7 @@ export const Conclusion = () => {
       </Heading>
 
       <Box mb={5}>
-        {(isLoading && (
+        {(isSatisfactionLoading && (
           <Stack>
             <Stack>
               <Skeleton height="20px" />
@@ -121,7 +152,7 @@ export const Conclusion = () => {
             </Center>
           </Stack>
         )) ||
-          (error && <ErrorPage />) || (
+          (satisfactionError && <ErrorPage />) || (
             <Center>
               <Doughnut
                 data={{
@@ -159,12 +190,29 @@ export const Conclusion = () => {
             </Center>
           )}
       </Box>
-
+      <Divider borderColor={useColorModeValue("gray.900", "gray.400")} />
+      <Heading as="h4" size="md" mb={5} mt={5}>
+        Responden Terakhir
+      </Heading>
       <Box overflowY="auto" maxHeight="300px">
-        {(isLoading && <ListCardSkeleton />) || (error && <ErrorPage />) || (
-          <ListCard data={data} />
-        )}
+        {(isSurveysLoading && <ListCardSkeleton />) ||
+          (surveysError && <ErrorPage />) || (
+            <ListCard data={surveysData.data} />
+          )}
       </Box>
+
+      {/* Pagination */}
+      {!isSurveysLoading && !surveysError && surveysData && (
+        <Box mb={5} mt={5} w="100%">
+          <Pagination
+            currentPage={page}
+            onPageChange={handlePageChange}
+            totalPages={surveysData.pagination.totalPages}
+          />
+        </Box>
+      )}
+
+      <Divider borderColor={useColorModeValue("gray.900", "gray.400")} />
 
       {roomPublicHealth.map((element, index) => {
         return (
@@ -174,14 +222,15 @@ export const Conclusion = () => {
             </Heading>
 
             <Box mb={5}>
-              {(isLoading && <CardSkeleton />) || (error && <ErrorPage />) || (
-                <ConclusionPeople data={allRoom[index]} />
-              )}
+              {(isSatisfactionLoading && <CardSkeleton />) ||
+                (satisfactionError && <ErrorPage />) || (
+                  <ConclusionPeople data={allRoom[index]} />
+                )}
             </Box>
           </div>
         );
       })}
-
+      <Divider borderColor={useColorModeValue("gray.900", "gray.400")} />
       <Heading as="h4" size="md" mb={5} mt={5}>
         Tingkat kepuasan responden terhadap poli di Puskesmas Lapadde
       </Heading>
@@ -195,7 +244,7 @@ export const Conclusion = () => {
       </Select>
 
       <Box mb={5}>
-        {(isLoading && (
+        {(isSatisfactionLoading && (
           <Stack>
             <Stack>
               <Skeleton height="20px" />
@@ -207,7 +256,7 @@ export const Conclusion = () => {
             </Center>
           </Stack>
         )) ||
-          (error && <ErrorPage />) || (
+          (satisfactionError && <ErrorPage />) || (
             <Center>
               <Pie
                 data={{
