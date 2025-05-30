@@ -1,10 +1,9 @@
 import { Card, Heading, CardBody, Text } from "@chakra-ui/react";
 import { countSatisfaction } from "../utils/count_satisfaction";
 import { totalPoint } from "../utils/count_point";
+import { formatDate } from "../utils/convert";
 
 const CardPatientSatisfaction = ({
-  index,
-
   patient: {
     age,
     gender,
@@ -13,15 +12,17 @@ const CardPatientSatisfaction = ({
     services_received,
     answers,
     suggestion,
+    createdAt,
   },
 }) => {
   const totalPoints = totalPoint(answers);
   return (
     <Card>
       <CardBody>
-        {/* <Heading size={"md"} mb={2}>
-          Orang ke - {index + 1}
-        </Heading> */}
+        <Heading size={"sm"} mb={2}>
+          {formatDate(createdAt)}
+        </Heading>
+
         <Text>Umur : {age}</Text>
         <Text>Jenis Kelamin : {gender}</Text>
         <Text>Pendidikan : {education}</Text>

@@ -6,12 +6,8 @@ const ListCard = ({ data }) => {
   return (
     <>
       <VStack spacing={4} align="stretch" mb={5}>
-        {data.map((element, index) => (
-          <CardPatientSatisfaction
-            index={index}
-            key={element.id}
-            patient={element}
-          />
+        {data.map((element) => (
+          <CardPatientSatisfaction key={element.id} patient={element} />
         ))}
       </VStack>
     </>
