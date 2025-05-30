@@ -1,6 +1,6 @@
 export const menuNavbar = [
-  { name: "Home", path: "/" },
-  { name: "Conclusion", path: "/conclusion" },
+  { name: "Beranda", path: "/" },
+  { name: "Penilaian", path: "/conclusion" },
 ];
 
 export const roomPublicHealth = [
