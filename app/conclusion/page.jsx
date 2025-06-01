@@ -15,15 +15,12 @@ import { fetcher } from "../swr/fetcher";
 import ListCardSkeleton from "../components/ListCardSkeleton";
 import ErrorPage from "../components/ErrorPage";
 import ListCard from "../components/ListCard";
-import CardSkeleton from "../components/CardSkeleton";
 import ConclusionPeople from "../components/ConclusionPeople";
 import { roomPublicHealth, valuePoint } from "../utils/contans";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { Doughnut, Pie } from "react-chartjs-2";
 import { useState, useEffect } from "react";
-import { respondentAssessment } from "../utils/count_point";
 import Pagination from "../components/Pagination";
-
 import { useRouter, useSearchParams } from "next/navigation";
 import TotalPeople from "../components/TotalPeople";
 import DividerCustom from "../components/DividerCustom";
@@ -34,14 +31,6 @@ export const Conclusion = () => {
   const pageParam = searchParams.get("page");
 
   const [selectedValuePoli, setSelectedValuePoli] = useState("Poli Umum");
-
-  const {
-    data: satisfactionData,
-    error: satisfactionError,
-    isLoading: isSatisfactionLoading,
-  } = useSWR(`/api/satisfaction`, fetcher, {
-    refreshInterval: 10000,
-  });
 
   const {
     data: totalData,
