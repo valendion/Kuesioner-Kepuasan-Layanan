@@ -27,6 +27,7 @@ import { respondentAssessment } from "../utils/count_point";
 import Pagination from "../components/Pagination";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import TotalPeople from "../components/TotalPeople";
 
 export const Conclusion = () => {
   const router = useRouter();
@@ -42,6 +43,14 @@ export const Conclusion = () => {
   });
 
   const {
+    data: totalData,
+    error: totalError,
+    isLoading: isTotalLoading,
+  } = useSWR(`/api/satisfaction/total`, fetcher, {
+    refreshInterval: 10000,
+  });
+
+  const {
     data: surveysData,
     error: surveysError,
     isLoading: isSurveysLoading,
@@ -49,6 +58,9 @@ export const Conclusion = () => {
 
   const [page, setPage] = useState(1);
   const [selectedValuePoli, setSelectedValuePoli] = useState("Poli Umum");
+
+  const [selectedValuePolTotal, setSelectedValuePoliTotal] =
+    useState("Poli Umum");
 
   useEffect(() => {
     const initialPage = pageParam ? parseInt(pageParam) : 1;
@@ -67,6 +79,10 @@ export const Conclusion = () => {
 
   const handleChangePoli = (event) => {
     setSelectedValuePoli(event.target.value);
+  };
+
+  const handleChangePoliTotal = (event) => {
+    setSelectedValuePoliTotal(event.target.value);
   };
 
   ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -136,11 +152,11 @@ export const Conclusion = () => {
   return (
     <Container h={"100%"} w={"100%"} mt={20} zIndex={1}>
       <Heading as="h4" size="md" mb={5} mt={5}>
-        Daftar data kuisioner
+        Daftar Responden di tiap poli
       </Heading>
 
       <Box mb={5}>
-        {(isSatisfactionLoading && (
+        {(isTotalLoading && (
           <Stack>
             <Stack>
               <Skeleton height="20px" />
@@ -152,44 +168,49 @@ export const Conclusion = () => {
             </Center>
           </Stack>
         )) ||
-          (satisfactionError && <ErrorPage />) || (
-            <Center>
-              <Doughnut
-                data={{
-                  labels: roomPublicHealth,
-                  datasets: [
-                    {
-                      label: "Jumlah orang yang memberikan penilaian",
-                      data: allRoom.map((data) => data.length),
-                      backgroundColor: [
-                        "#03AED2",
-                        "#CDE8E5",
-                        "#50AF95",
-                        "#f3ba2f",
-                        "#2a71d0",
-                        "#FA7070",
-                        "#F97300",
-                        "#A3D8FF",
-                        "#FFB1B1",
-                        "#874CCC",
-                      ],
-                      borderColor: "black",
-                      borderWidth: 2,
+          (totalError && <ErrorPage />) || (
+            <Box>
+              <Center mb={5}>
+                <Doughnut
+                  data={{
+                    labels: roomPublicHealth,
+                    datasets: [
+                      {
+                        label: "Jumlah orang yang memberikan penilaian",
+                        // data: allRoom.map((data) => data.length),
+                        data: Object.values(totalData?.data || {}),
+                        backgroundColor: [
+                          "#03AED2",
+                          "#CDE8E5",
+                          "#50AF95",
+                          "#f3ba2f",
+                          "#2a71d0",
+                          "#FA7070",
+                          "#F97300",
+                          "#A3D8FF",
+                          "#FFB1B1",
+                          "#874CCC",
+                        ],
+                        borderColor: "black",
+                        borderWidth: 2,
+                      },
+                    ],
+                  }}
+                  options={{
+                    plugins: {
+                      title: {
+                        display: true,
+                        text: "Responden di dapat dari November 2023 sampai sekarang",
+                      },
                     },
-                  ],
-                }}
-                options={{
-                  plugins: {
-                    title: {
-                      display: true,
-                      text: "Responden di dapat dari November 2023 sampai sekarang",
-                    },
-                  },
-                }}
-              />
-            </Center>
+                  }}
+                />
+              </Center>
+              <TotalPeople data={totalData} />
+            </Box>
           )}
       </Box>
+
       <Divider borderColor={useColorModeValue("gray.900", "gray.400")} />
       <Heading as="h4" size="md" mb={5} mt={5}>
         Responden Terakhir
@@ -230,7 +251,9 @@ export const Conclusion = () => {
           </div>
         );
       })}
+
       <Divider borderColor={useColorModeValue("gray.900", "gray.400")} />
+
       <Heading as="h4" size="md" mb={5} mt={5}>
         Tingkat kepuasan responden terhadap poli di Puskesmas Lapadde
       </Heading>

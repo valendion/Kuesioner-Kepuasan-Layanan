@@ -95,7 +95,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           </svg>
         }
       >
-        Previous
+        Sebelumnya
       </NavigationButton>
 
       <HStack spacing={1} wrap="wrap" justify="center">
@@ -136,7 +136,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           </svg>
         }
       >
-        Next
+        Selanjutnya
       </NavigationButton>
     </Stack>
   );
