@@ -30,8 +30,10 @@ const Footer = () => {
         justify={"center"}
         align={"center"}
       >
-        <Text>© 2023 Valendion Pradana Pasalu. All rights reserved</Text>
-        <Text>Versi : 1.0.2</Text>
+        <Box textAlign={"center"}>
+          <Text>© 2023 Valendion Pradana Pasalu. All rights reserved</Text>
+          <Text>Versi : 1.0.3</Text>
+        </Box>
         <Flex justify={"center"} align={"center"}>
           <SocialButton
             label={"Instagram"}
