@@ -31,6 +31,7 @@ const Footer = () => {
         align={"center"}
       >
         <Text>© 2023 Valendion Pradana Pasalu. All rights reserved</Text>
+        <Text>Versi : 1.0.2</Text>
         <Flex justify={"center"} align={"center"}>
           <SocialButton
             label={"Instagram"}

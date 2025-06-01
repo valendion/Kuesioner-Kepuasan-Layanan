@@ -1,12 +1,5 @@
+import { prisma } from "@/app/lib/prisma/initialization";
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
-
-export const GET = async () => {
-  const res = await prisma.patient.findMany();
-  return NextResponse.json(res, { status: 200 });
-};
 
 export const POST = async (request) => {
   const body = await request.json();
