@@ -1,5 +1,5 @@
 export const menuNavbar = [
-  { name: "Beranda", path: "/" },
+  { name: "Pertanyaan", path: "/" },
   { name: "Penilaian", path: "/conclusion" },
 ];
 
