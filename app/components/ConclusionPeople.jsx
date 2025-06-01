@@ -1,52 +1,20 @@
 import { Text } from "@chakra-ui/react";
-import { totalPoint } from "../utils/count_point";
-import { Card, CardBody } from "@chakra-ui/react";
+
+import { Card, CardBody, CardHeader, Heading } from "@chakra-ui/react";
 
 const ConclusionPeople = ({ data }) => {
   return (
     <>
       <Card>
+        <CardHeader>
+          <Heading size="md">{data.service}</Heading>
+        </CardHeader>
         <CardBody>
           {" "}
-          <Text>Total : {data.length} orang</Text>
-          <Text>
-            Tidak Puas :{" "}
-            {
-              data.filter(
-                (item) =>
-                  totalPoint(item.answers) / 9 >= 1 &&
-                  totalPoint(item.answers) / 9 <= 1.9
-              ).length
-            }{" "}
-            orang
-          </Text>
-          <Text>
-            Kurang Puas :{" "}
-            {
-              data.filter(
-                (item) =>
-                  totalPoint(item.answers) / 9 >= 2 &&
-                  totalPoint(item.answers) / 9 <= 2.9
-              ).length
-            }{" "}
-            orang
-          </Text>
-          <Text>
-            Puas :{" "}
-            {
-              data.filter(
-                (item) =>
-                  totalPoint(item.answers) / 9 >= 3 &&
-                  totalPoint(item.answers) / 9 <= 3.9
-              ).length
-            }{" "}
-            orang
-          </Text>
-          <Text>
-            Sangat Puas :{" "}
-            {data.filter((item) => totalPoint(item.answers) / 9 === 4).length}{" "}
-            orang
-          </Text>
+          <Text>Tidak Puas : {data.tidakPuas} orang</Text>
+          <Text>Kurang Puas :{data.kurangPuas} orang</Text>
+          <Text>Puas : {data.puas} orang</Text>
+          <Text>Sangat Puas : {data.sangatPuas} orang</Text>
         </CardBody>
       </Card>
     </>

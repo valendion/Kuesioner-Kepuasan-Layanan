@@ -8,8 +8,6 @@ import {
   Skeleton,
   SkeletonCircle,
   Select,
-  Divider,
-  useColorModeValue,
 } from "@chakra-ui/react";
 
 import useSWR from "swr";
@@ -28,11 +26,14 @@ import Pagination from "../components/Pagination";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import TotalPeople from "../components/TotalPeople";
+import DividerCustom from "../components/DividerCustom";
 
 export const Conclusion = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pageParam = searchParams.get("page");
+
+  const [selectedValuePoli, setSelectedValuePoli] = useState("Poli Umum");
 
   const {
     data: satisfactionData,
@@ -56,11 +57,19 @@ export const Conclusion = () => {
     isLoading: isSurveysLoading,
   } = useSWR(`/api/satisfaction/surveys?page=${pageParam || 1}`, fetcher);
 
-  const [page, setPage] = useState(1);
-  const [selectedValuePoli, setSelectedValuePoli] = useState("Poli Umum");
+  const {
+    data: satisfactionRateData,
+    error: satisfactionRateError,
+    isLoading: isSatisfactionRateLoading,
+  } = useSWR(
+    `/api/satisfaction/${encodeURIComponent(selectedValuePoli)}`,
+    fetcher,
+    {
+      refreshInterval: 10000,
+    }
+  );
 
-  const [selectedValuePolTotal, setSelectedValuePoliTotal] =
-    useState("Poli Umum");
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const initialPage = pageParam ? parseInt(pageParam) : 1;
@@ -81,80 +90,15 @@ export const Conclusion = () => {
     setSelectedValuePoli(event.target.value);
   };
 
-  const handleChangePoliTotal = (event) => {
-    setSelectedValuePoliTotal(event.target.value);
-  };
-
   ChartJS.register(ArcElement, Tooltip, Legend, Title);
-
-  let poliUmum = [];
-  let poliKIA = [];
-  let poliGigi = [];
-  let laboratorium = [];
-  let mTBS = [];
-  let ruangImunisasi = [];
-  let loketPendaftaran = [];
-  let apotek = [];
-  let uGD = [];
-  let oldAnswers = [];
-  let allRoom = [];
-
-  let assignmentPolis = [];
-
-  if (!isSatisfactionLoading && !satisfactionError) {
-    oldAnswers = [...satisfactionData];
-    poliUmum = oldAnswers.filter(
-      (service) => service.services_received === "Poli Umum"
-    );
-    poliKIA = oldAnswers.filter(
-      (service) => service.services_received === "Poli KIA"
-    );
-    poliGigi = oldAnswers.filter(
-      (service) => service.services_received === "Poli Gigi"
-    );
-
-    laboratorium = oldAnswers.filter(
-      (service) => service.services_received === "Laboratorium"
-    );
-    mTBS = oldAnswers.filter((service) => service.services_received === "MTBS");
-    ruangImunisasi = oldAnswers.filter(
-      (service) => service.services_received === "Ruang Imunisasi"
-    );
-    loketPendaftaran = oldAnswers.filter(
-      (service) =>
-        service.services_received === "Loket pendaftaran / Rekam Medis"
-    );
-
-    apotek = oldAnswers.filter(
-      (service) => service.services_received === "Apotek"
-    );
-
-    uGD = oldAnswers.filter((service) => service.services_received === "UGD");
-    allRoom = [
-      poliUmum,
-      poliGigi,
-      poliKIA,
-      laboratorium,
-      mTBS,
-      ruangImunisasi,
-      loketPendaftaran,
-      apotek,
-      uGD,
-    ];
-
-    assignmentPolis = respondentAssessment(
-      oldAnswers.filter(
-        (service) => service.services_received === `${selectedValuePoli}`
-      )
-    );
-  }
 
   return (
     <Container h={"100%"} w={"100%"} mt={20} zIndex={1}>
-      <Heading as="h4" size="md" mb={5} mt={5}>
-        Daftar Responden di tiap poli
-      </Heading>
-
+      <Box textAlign={"center"}>
+        <Heading as="h4" size="md" mb={5} mt={5}>
+          Daftar Responden di Semua Poli
+        </Heading>
+      </Box>
       <Box mb={5}>
         {(isTotalLoading && (
           <Stack>
@@ -211,10 +155,13 @@ export const Conclusion = () => {
           )}
       </Box>
 
-      <Divider borderColor={useColorModeValue("gray.900", "gray.400")} />
-      <Heading as="h4" size="md" mb={5} mt={5}>
-        Responden Terakhir
-      </Heading>
+      <DividerCustom />
+
+      <Box textAlign={"center"}>
+        <Heading as="h4" size="md" mb={5} mt={5}>
+          Responden Terakhir
+        </Heading>
+      </Box>
       <Box overflowY="auto" maxHeight="300px">
         {(isSurveysLoading && <ListCardSkeleton />) ||
           (surveysError && <ErrorPage />) || (
@@ -233,30 +180,13 @@ export const Conclusion = () => {
         </Box>
       )}
 
-      <Divider borderColor={useColorModeValue("gray.900", "gray.400")} />
+      <DividerCustom />
 
-      {roomPublicHealth.map((element, index) => {
-        return (
-          <div key={index}>
-            <Heading as="h4" size="md" mb={5} mt={5}>
-              Penilaian Pada {element}
-            </Heading>
-
-            <Box mb={5}>
-              {(isSatisfactionLoading && <CardSkeleton />) ||
-                (satisfactionError && <ErrorPage />) || (
-                  <ConclusionPeople data={allRoom[index]} />
-                )}
-            </Box>
-          </div>
-        );
-      })}
-
-      <Divider borderColor={useColorModeValue("gray.900", "gray.400")} />
-
-      <Heading as="h4" size="md" mb={5} mt={5}>
-        Tingkat kepuasan responden terhadap poli di Puskesmas Lapadde
-      </Heading>
+      <Box textAlign={"center"}>
+        <Heading as="h4" size="md" mb={5} mt={5}>
+          Tingkat Kepuasan di Puskesmas Lapadde
+        </Heading>
+      </Box>
 
       <Select value={selectedValuePoli} onChange={handleChangePoli}>
         {roomPublicHealth.map((dataHealth, index) => (
@@ -267,7 +197,7 @@ export const Conclusion = () => {
       </Select>
 
       <Box mb={5}>
-        {(isSatisfactionLoading && (
+        {(isSatisfactionRateLoading && (
           <Stack>
             <Stack>
               <Skeleton height="20px" />
@@ -279,37 +209,47 @@ export const Conclusion = () => {
             </Center>
           </Stack>
         )) ||
-          (satisfactionError && <ErrorPage />) || (
-            <Center>
-              <Pie
-                data={{
-                  labels: valuePoint,
-                  datasets: [
-                    {
-                      label: "Penilaian responden",
-                      data: assignmentPolis,
+          (satisfactionRateError && <ErrorPage />) || (
+            <Box>
+              <Center>
+                <Pie
+                  data={{
+                    labels: valuePoint,
+                    datasets: [
+                      {
+                        label: "Penilaian responden",
+                        data: [
+                          satisfactionRateData.sangatPuas,
+                          satisfactionRateData.puas,
+                          satisfactionRateData.kurangPuas,
+                          satisfactionRateData.tidakPuas,
+                        ],
 
-                      backgroundColor: [
-                        "#50AF95",
-                        "#2a71d0",
-                        "#f3ba2f",
-                        "#FA7070",
-                      ],
-                      borderColor: "black",
-                      borderWidth: 2,
+                        backgroundColor: [
+                          "#50AF95",
+                          "#2a71d0",
+                          "#f3ba2f",
+                          "#FA7070",
+                        ],
+                        borderColor: "black",
+                        borderWidth: 2,
+                      },
+                    ],
+                  }}
+                  options={{
+                    plugins: {
+                      title: {
+                        display: true,
+                        text: `Penilaian Responden ${selectedValuePoli}`,
+                      },
                     },
-                  ],
-                }}
-                options={{
-                  plugins: {
-                    title: {
-                      display: true,
-                      text: `Penilaian Responden ${selectedValuePoli}`,
-                    },
-                  },
-                }}
-              />
-            </Center>
+                  }}
+                />
+              </Center>
+              <Box mt={6}>
+                <ConclusionPeople data={satisfactionRateData} />
+              </Box>
+            </Box>
           )}
       </Box>
     </Container>
