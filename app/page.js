@@ -5,10 +5,15 @@ import FormQuestion from "./components/FormQuestion";
 import { useValidation } from "./lib/formik/validation";
 import { changeArrayInt } from "./utils/count_point";
 import axios from "axios";
+import { useState } from "react";
 
 export default function Home() {
   const toast = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (values) => {
+    if (isSubmitting) return; // Jika sedang proses, abaikan
+    setIsSubmitting(true);
     if (values) {
       const {
         occupation,
@@ -53,6 +58,8 @@ export default function Home() {
           status: "error",
           isClosable: true,
         });
+      } finally {
+        setIsSubmitting(false); // Reset state setelah selesai
       }
     }
   };
@@ -65,7 +72,6 @@ export default function Home() {
     validation.setFieldValue(target.name, target.value);
   };
 
-  const isLoading = false;
   return (
     <Container h={"100%"} w={"100%"} mt={20} zIndex={1}>
       <form onSubmit={validation.handleSubmit}>
@@ -73,7 +79,7 @@ export default function Home() {
           Profil
         </Heading>
         <FormInput
-          isLoading={isLoading}
+          isLoading={isSubmitting}
           handleForm={handleForm}
           validation={validation}
         />
@@ -82,11 +88,17 @@ export default function Home() {
           Pendapat Responden tentang Pelayanan
         </Heading>
         <FormQuestion
-          isLoading={isLoading}
+          isLoading={isSubmitting}
           handleForm={handleForm}
           validation={validation}
         />
-        <Button type="submit" isDisabled={isLoading} w={"100%"} my={5}>
+        <Button
+          type="submit"
+          isLoading={isSubmitting}
+          isDisabled={isSubmitting}
+          w={"100%"}
+          my={5}
+        >
           Kirim
         </Button>
       </form>
