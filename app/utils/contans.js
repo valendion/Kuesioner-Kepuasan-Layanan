@@ -3,6 +3,15 @@ export const menuNavbar = [
   { name: "Penilaian", path: "/conclusion" },
 ];
 
+export const threeYearBefore = () => {
+  const currentYear = new Date().getFullYear();
+  const lastFourYears = Array.from(
+    { length: 3 },
+    (_, i) => currentYear - 2 + i
+  );
+  return lastFourYears;
+};
+
 export const roomPublicHealth = [
   "Poli Umum",
   "Poli Gigi",
@@ -13,6 +22,7 @@ export const roomPublicHealth = [
   "Loket pendaftaran / Rekam Medis",
   "Apotek",
   "UGD",
+  "Akupresur",
 ];
 
 export const valuePoint = ["Sangat Puas", "Puas", "Kurang Puas", "Tidak Puas"];

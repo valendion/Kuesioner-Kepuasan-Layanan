@@ -16,7 +16,11 @@ import ListCardSkeleton from "../components/ListCardSkeleton";
 import ErrorPage from "../components/ErrorPage";
 import ListCard from "../components/ListCard";
 import ConclusionPeople from "../components/ConclusionPeople";
-import { roomPublicHealth, valuePoint } from "../utils/contans";
+import {
+  roomPublicHealth,
+  threeYearBefore,
+  valuePoint,
+} from "../utils/contans";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { Doughnut, Pie } from "react-chartjs-2";
 import { useState, useEffect } from "react";
@@ -31,6 +35,7 @@ export const Conclusion = () => {
   const pageParam = searchParams.get("page");
 
   const [selectedValuePoli, setSelectedValuePoli] = useState("Poli Umum");
+  const [selectedValueYear, setSelectedValueYear] = useState(2025);
 
   const {
     data: totalData,
@@ -77,6 +82,10 @@ export const Conclusion = () => {
 
   const handleChangePoli = (event) => {
     setSelectedValuePoli(event.target.value);
+  };
+
+  const handleChangeYear = (event) => {
+    setSelectedValueYear(event.target.value);
   };
 
   ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -181,6 +190,14 @@ export const Conclusion = () => {
         {roomPublicHealth.map((dataHealth, index) => (
           <option value={dataHealth} key={index}>
             {dataHealth}
+          </option>
+        ))}
+      </Select>
+
+      <Select value={selectedValueYear} onChange={handleChangeYear} mt={2}>
+        {threeYearBefore().map((year, index) => (
+          <option value={year} key={index}>
+            {year}
           </option>
         ))}
       </Select>

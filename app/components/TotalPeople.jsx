@@ -18,6 +18,8 @@ const TotalPeople = ({ data }) => {
           </Text>
           <Text>Apotek : {data.data["Apotek"]} orang</Text>
           <Text>UGD : {data.data["UGD"]} orang</Text>
+          <Text>Akupresur : {data.data["Akupresur"]} orang</Text>
+
           <Text>Total : {data.total} orang</Text>
         </CardBody>
       </Card>
