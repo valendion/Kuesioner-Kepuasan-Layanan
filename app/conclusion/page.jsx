@@ -56,7 +56,9 @@ export const Conclusion = () => {
     error: satisfactionRateError,
     isLoading: isSatisfactionRateLoading,
   } = useSWR(
-    `/api/satisfaction/${encodeURIComponent(selectedValuePoli)}`,
+    `/api/satisfaction/${encodeURIComponent(
+      selectedValuePoli
+    )}/${encodeURIComponent(selectedValueYear)}`,
     fetcher,
     {
       refreshInterval: 10000,

@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma/initialization";
 
-// Fungsi menghitung total skor dari answers
 const hitungTotalSkor = (answers) => {
-  // Jika answers adalah string (JSON), parse dulu
   if (typeof answers === "string") {
     try {
       answers = JSON.parse(answers);
@@ -12,39 +10,38 @@ const hitungTotalSkor = (answers) => {
     }
   }
 
-  // Jika answers bukan array, kembalikan 0
   if (!Array.isArray(answers)) return 0;
-
-  // Hitung total nilai dari semua answer
   return answers.reduce((total, answer) => {
-    // Support berbagai format answer:
-    // 1. Format object { value: number }
-    // 2. Format array [value1, value2, ...]
-    // 3. Langsung nilai number
     const nilai = answer?.value ?? answer;
     return total + (Number(nilai) || 0);
   }, 0);
 };
 
 export const GET = async (request, { params }) => {
-  const { service } = params;
+  const { service, year } = params;
   const namaPoli = decodeURIComponent(service);
+  const tahun = decodeURIComponent(year);
 
   try {
-    // 1. Ambil semua answers dari poli tertentu
     const responses = await prisma.patient.findMany({
       where: {
         services_received: {
+          // Pastikan ini sesuai dengan nama field di model
           equals: namaPoli,
           mode: "insensitive",
         },
+        createdAt: {
+          // Diubah dari created_at ke createdAt
+          gte: new Date(`${tahun}-01-01`),
+          lt: new Date(`${parseInt(tahun) + 1}-01-01`),
+        },
       },
       select: {
-        answers: true, // Hanya ambil kolom answers
+        answers: true,
+        createdAt: true, // Diubah dari created_at ke createdAt
       },
     });
 
-    // 2. Hitung jumlah responden per kategori
     let sangatPuas = 0;
     let puas = 0;
     let kurangPuas = 0;
@@ -52,7 +49,7 @@ export const GET = async (request, { params }) => {
 
     responses.forEach((response) => {
       const totalSkor = hitungTotalSkor(response.answers);
-      const rataRata = totalSkor / 9; // Asumsi ada 9 pertanyaan
+      const rataRata = totalSkor / 9;
 
       if (rataRata === 4) {
         sangatPuas++;
@@ -65,10 +62,10 @@ export const GET = async (request, { params }) => {
       }
     });
 
-    // 3. Return hasil dalam format yang diminta
     return NextResponse.json(
       {
         service: namaPoli,
+        year: tahun,
         sangatPuas,
         puas,
         kurangPuas,
@@ -81,6 +78,7 @@ export const GET = async (request, { params }) => {
     return NextResponse.json(
       {
         service: namaPoli,
+        year: tahun,
         sangatPuas: 0,
         puas: 0,
         kurangPuas: 0,
