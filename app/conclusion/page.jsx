@@ -35,7 +35,9 @@ export const Conclusion = () => {
   const pageParam = searchParams.get("page");
 
   const [selectedValuePoli, setSelectedValuePoli] = useState("Poli Umum");
-  const [selectedValueYear, setSelectedValueYear] = useState(2025);
+  const [selectedValueYear, setSelectedValueYear] = useState(
+    new Date().getFullYear(),
+  );
 
   const {
     data: totalData,
@@ -57,12 +59,12 @@ export const Conclusion = () => {
     isLoading: isSatisfactionRateLoading,
   } = useSWR(
     `/api/satisfaction/${encodeURIComponent(
-      selectedValuePoli
+      selectedValuePoli,
     )}/${encodeURIComponent(selectedValueYear)}`,
     fetcher,
     {
       refreshInterval: 10000,
-    }
+    },
   );
 
   const [page, setPage] = useState(1);
