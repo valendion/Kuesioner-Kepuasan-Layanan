@@ -31,10 +31,7 @@ export const useValidation = ({ handleSubmit }) => {
         .string()
         .required("Jenis layanan yang diterima wajib dipilih"),
       answers: yup.array().of(yup.string().required("Jawaban harus dipilih")),
-      suggestion: yup
-        .string()
-        .min(23, "Saran harus memiliki minimal 23 karakter")
-        .required("Saran wajib diisi"),
+      suggestion: yup.string(),
     }),
     onSubmit: handleSubmit,
   });

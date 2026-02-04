@@ -7,7 +7,9 @@ import {
   FormLabel,
   FormErrorMessage,
   Textarea,
+  Checkbox,
 } from "@chakra-ui/react";
+
 import { questionData } from "../utils/contans";
 
 const FormQuestion = ({ isLoading, handleForm, validation }) => {
@@ -45,7 +47,9 @@ const FormQuestion = ({ isLoading, handleForm, validation }) => {
 
       <FormControl isInvalid={validation.errors.suggestion}>
         <FormLabel>Saran Anda</FormLabel>
+
         <Textarea
+          mt={2}
           placeholder="Masukkan saran anda"
           size="md"
           type="text"

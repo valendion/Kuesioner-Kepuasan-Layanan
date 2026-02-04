@@ -5,12 +5,12 @@ export const POST = async (request) => {
   const body = await request.json();
   const patient = await prisma.patient.create({
     data: {
-      age: body.age,
+      age: Number(body.age),
       gender: body.gender,
       education: body.education,
       occupation: body.occupation,
       services_received: body.services_received,
-      answers: body.answers,
+      answers: JSON.stringify(body.answers),
       suggestion: body.suggestion,
     },
   });
