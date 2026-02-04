@@ -1,16 +1,22 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma/initialization";
+import { parsePostgresArray } from "@/app/utils/convert";
 
 const hitungTotalSkor = (answers) => {
   if (typeof answers === "string") {
-    try {
-      answers = JSON.parse(answers);
-    } catch {
-      return 0;
+    if (answers.startsWith("{") && answers.endsWith("}")) {
+      answers = parsePostgresArray(answers);
+    } else {
+      try {
+        answers = JSON.parse(answers);
+      } catch {
+        return 0;
+      }
     }
   }
 
   if (!Array.isArray(answers)) return 0;
+
   return answers.reduce((total, answer) => {
     const nilai = answer?.value ?? answer;
     return total + (Number(nilai) || 0);
@@ -71,7 +77,7 @@ export const GET = async (request, { params }) => {
         kurangPuas,
         tidakPuas,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error:", error);
@@ -85,7 +91,7 @@ export const GET = async (request, { params }) => {
         tidakPuas: 0,
         error: "Terjadi kesalahan dalam perhitungan",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

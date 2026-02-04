@@ -6,3 +6,13 @@ export const formatDate = (dateString) => {
     year: "numeric",
   }).format(date);
 };
+
+export const parsePostgresArray = (str) => {
+  if (typeof str !== "string") return str;
+
+  if (str.startsWith("{") && str.endsWith("}")) {
+    const cleaned = str.slice(1, -1); // hapus { }
+    return cleaned.split(",").map((v) => Number(v));
+  }
+  return str;
+};
