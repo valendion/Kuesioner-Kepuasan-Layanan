@@ -23,7 +23,7 @@ export const GET = async (request) => {
       prisma.patient.findMany({
         skip: offset,
         take: limit,
-        orderBy: { createdAt: "desc" },
+        orderBy: { createdat: "desc" },
       }),
       prisma.patient.count(),
     ]);

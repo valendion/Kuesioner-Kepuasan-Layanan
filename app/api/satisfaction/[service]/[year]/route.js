@@ -30,15 +30,15 @@ export const GET = async (request, { params }) => {
           equals: namaPoli,
           mode: "insensitive",
         },
-        createdAt: {
-          // Diubah dari created_at ke createdAt
+        createdat: {
+          // Diubah dari created_at ke createdat
           gte: new Date(`${tahun}-01-01`),
           lt: new Date(`${parseInt(tahun) + 1}-01-01`),
         },
       },
       select: {
         answers: true,
-        createdAt: true, // Diubah dari created_at ke createdAt
+        createdat: true, // Diubah dari created_at ke createdat
       },
     });
 
