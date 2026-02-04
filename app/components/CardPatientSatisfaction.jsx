@@ -29,7 +29,7 @@ const CardPatientSatisfaction = ({
         <Text>Pekerjaan : {occupation}</Text>
         <Text>Layanan yang diterima : {services_received}</Text>
         <Text>Tingkat kepuasan : {countSatisfaction(totalPoints)}</Text>
-        <Text>Saran : {suggestion}</Text>
+        <Text>Saran : {suggestion || "Tidak ada saran"}</Text>
       </CardBody>
     </Card>
   );
