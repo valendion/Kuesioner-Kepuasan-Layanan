@@ -54,8 +54,24 @@ export default function Home() {
           });
         }
       } catch (error) {
+        // catch (error) {
+        //   toast({
+        //     title: "Terjadi kesalahan",
+        //     status: "error",
+        //     isClosable: true,
+        //   });
+        // }
+        console.error("Error detail:", error.response?.data);
+
+        const errorMessage =
+          error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.message ||
+          "Terjadi kesalahan";
+
         toast({
-          title: "Terjadi kesalahan",
+          title: "Gagal mengirim",
+          description: errorMessage,
           status: "error",
           isClosable: true,
         });
