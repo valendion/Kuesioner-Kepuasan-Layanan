@@ -19,7 +19,6 @@ export const POST = async (request) => {
 
     return NextResponse.json(patient, { status: 200 });
   } catch (error) {
-    console.error("API ERROR:", error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 };
