@@ -88,14 +88,14 @@ export default function ReportPage() {
     window.print();
   };
 
-  const mapAnswersToLetters = (answersStr) => {
+  const mapAnswersToNumbers = (answersStr) => {
     if (!answersStr) return "-";
     try {
       let arr = [];
       if (typeof answersStr === "string") {
         if (answersStr.startsWith("{") && answersStr.endsWith("}")) {
           const cleaned = answersStr.slice(1, -1);
-          arr = cleaned.split(",").map(Number);
+          arr = cleaned.split(",").map((v) => v.trim());
         } else {
           arr = JSON.parse(answersStr);
         }
@@ -105,8 +105,13 @@ export default function ReportPage() {
 
       if (!Array.isArray(arr)) return "-";
 
-      const mapping = { 1: "a", 2: "b", 3: "c", 4: "d" };
-      return arr.map((val) => mapping[val] || val).join(", ");
+      const mapping = { 
+        1: 1, 2: 2, 3: 3, 4: 4,
+        "1": 1, "2": 2, "3": 3, "4": 4,
+        "a": 1, "b": 2, "c": 3, "d": 4,
+        "A": 1, "B": 2, "C": 3, "D": 4
+      };
+      return arr.map((val) => mapping[val] !== undefined ? mapping[val] : val).join(", ");
     } catch (e) {
       return "-";
     }
@@ -370,7 +375,7 @@ export default function ReportPage() {
                       <Td>{patient.occupation}</Td>
                       <Td className="cell-wrap">{patient.services_received}</Td>
                       <Td className="cell-answers" fontWeight="semibold" color="teal.500">
-                        {mapAnswersToLetters(patient.answers)}
+                        {mapAnswersToNumbers(patient.answers)}
                       </Td>
                       <Td className="cell-wrap" fontSize="sm" color={patient.suggestion ? undefined : "gray.400"} fontStyle={patient.suggestion ? undefined : "italic"}>
                         {patient.suggestion || "Tidak ada saran"}
