@@ -33,7 +33,7 @@ const Footer = () => {
       >
         <Box textAlign={"center"}>
           <Text>© 2023 Valendion Pradana Pasalu. All rights reserved</Text>
-          <Text>Versi : 1.0.6</Text>
+          <Text>Versi : 1.1.0</Text>
         </Box>
         <Flex justify={"center"} align={"center"}>
           <SocialButton
