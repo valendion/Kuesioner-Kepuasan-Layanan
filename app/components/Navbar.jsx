@@ -29,6 +29,7 @@ const Navbar = () => {
       w={"100%"}
       position={"fixed"}
       zIndex={2}
+      className="no-print"
     >
       <Flex h={16} alignItems="center">
         <IconButton
