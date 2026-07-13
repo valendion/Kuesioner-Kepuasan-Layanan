@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect, useCallback } from "react";
 import {
   Container,
@@ -105,7 +106,7 @@ export default function ReportPage() {
 
       if (!Array.isArray(arr)) return "-";
 
-      const mapping = { 
+      const mapping = {
         1: 1, 2: 2, 3: 3, 4: 4,
         "1": 1, "2": 2, "3": 3, "4": 4,
         "a": 1, "b": 2, "c": 3, "d": 4,
@@ -124,123 +125,164 @@ export default function ReportPage() {
 
   return (
     <Container maxW="container.xl" mt={20} mb={10} className="print-container">
+      {/* ====== CSS PRINT & SCREEN ====== */}
       <style dangerouslySetInnerHTML={{
         __html: `
-        @media print {
-          /* Hide Navbar, Footer, controls, and other UI wrappers */
-          nav, footer, header, div[position="fixed"], .no-print {
-            display: none !important;
-          }
-          
-          html, body {
-            height: auto !important;
-            min-height: 0 !important;
-            background: white !important;
-            color: black !important;
-            margin: 0 !important;
-            padding: 0 !important;
-          }
-
-          div.chakra-flex, #__next, body > div {
-            height: auto !important;
-            min-height: 0 !important;
-            display: block !important;
-            padding: 0 !important;
-            margin: 0 !important;
-          }
-          
-          .print-container {
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: transparent !important;
-          }
-
-          .print-container .chakra-card {
-            background: transparent !important;
-            box-shadow: none !important;
-            border: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
-          }
-
-          /* FIX: Header tetap bersama konten di bawahnya */
-          .print-header {
-            display: block !important;
-            text-align: center !important;
-            margin: 0 0 15px 0 !important;
-            padding: 0 0 10px 0 !important;
-            border-bottom: 2px solid #000 !important;
-            page-break-after: avoid !important;
-            break-after: avoid-page !important;
-          }
-
-          .print-header h1 {
-            font-size: 16pt !important;
-            font-weight: bold !important;
-            margin: 0 !important;
-            color: #000 !important;
-          }
-
-          .print-header h2 {
-            font-size: 13pt !important;
-            margin: 5px 0 0 0 !important;
-            color: #000 !important;
-          }
-
-          /* FIX: Wrapper tabel tidak dipisah dari header */
-          .print-table-wrap {
-            page-break-before: avoid !important;
-            break-before: avoid-page !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            box-shadow: none !important;
-            border: none !important;
-            overflow: visible !important;
-          }
-
-          /* FIX: Reset table container overflow agar tabel bisa multipage */
-          .chakra-table__container, div[class*="TableContainer"] {
-            overflow: visible !important;
-            overflow-x: visible !important;
-            display: block !important;
-          }
-
-          /* Styled Table for Printing */
-          table {
+          /* SCREEN: Border manis pada tabel */
+          .print-table {
             border-collapse: collapse !important;
-            width: 100% !important;
-            margin-top: 10px !important;
+            width: 100%;
           }
-          
-          th, td {
-            border: 1px solid #000000 !important;
-            padding: 5px 7px !important; /* FIX: sedikit diperkecil agar muat lebih banyak */
-            font-size: 9pt !important;
-            color: black !important;
-            background-color: transparent !important;
-            text-align: left !important;
+          .print-table th,
+          .print-table td {
+            border: 1px solid #e2e8f0 !important;
           }
-          
-          /* FIX: Hapus page-break-inside: avoid dari tr */
-          thead {
-            display: table-header-group !important;
+          .print-table th {
+            border-bottom: 2px solid #3182ce !important;
+          }
+          .print-table tbody tr:last-child td {
+            border-bottom: 1px solid #e2e8f0 !important;
           }
 
-          th {
-            background-color: #f2f2f2 !important;
-            font-weight: bold !important;
-            text-align: center !important;
-          }
+          /* PRINT */
+          @media print {
+            @page {
+              margin: 1.5cm;
+              size: A4 portrait;
+            }
 
-          .text-center {
-            text-align: center !important;
-          }
-        }
-      `}} />
+            .no-print, nav, footer, header {
+              display: none !important;
+            }
 
-      {/* Screen layout Header / controls */}
+            html, body {
+              height: auto !important;
+              min-height: 0 !important;
+              background: white !important;
+              color: black !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+
+            div.chakra-flex, #__next, body > div {
+              height: auto !important;
+              min-height: 0 !important;
+              display: block !important;
+              padding: 0 !important;
+              margin: 0 !important;
+            }
+
+            .print-container {
+              width: 100% !important;
+              max-width: 100% !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              background: transparent !important;
+            }
+
+            .print-container .chakra-card {
+              background: transparent !important;
+              box-shadow: none !important;
+              border: none !important;
+              padding: 0 !important;
+              margin: 0 !important;
+            }
+
+            .print-header {
+              display: block !important;
+              text-align: center !important;
+              margin: 0 0 15px 0 !important;
+              padding: 0 0 10px 0 !important;
+              border-bottom: 2px solid #000 !important;
+              page-break-after: avoid !important;
+              break-after: avoid-page !important;
+            }
+
+            .print-header h1 {
+              font-size: 16pt !important;
+              font-weight: bold !important;
+              margin: 0 !important;
+              color: #000 !important;
+            }
+
+            .print-header h2 {
+              font-size: 13pt !important;
+              margin: 5px 0 0 0 !important;
+              color: #000 !important;
+            }
+
+            .print-table-wrap {
+              page-break-before: avoid !important;
+              break-before: avoid-page !important;
+              padding: 0 !important;
+              margin: 0 !important;
+              box-shadow: none !important;
+              border: none !important;
+              overflow: visible !important;
+            }
+
+            .chakra-table__container, div[class*="TableContainer"] {
+              overflow: visible !important;
+              overflow-x: visible !important;
+              display: block !important;
+            }
+
+            /* ===== BORDER TABEL HITAM TEGAS SAAT PRINT ===== */
+            .print-table {
+              border-collapse: collapse !important;
+              width: 100% !important;
+              margin-top: 10px !important;
+            }
+
+            .print-table th,
+            .print-table td {
+              border: 1px solid #000 !important;
+              padding: 5px 7px !important;
+              font-size: 9pt !important;
+              color: black !important;
+              background-color: transparent !important;
+            }
+
+            .print-table thead {
+              display: table-header-group !important;
+            }
+
+            .print-table th {
+              background-color: #e2e8f0 !important;
+              font-weight: bold !important;
+              text-align: center !important;
+            }
+
+            .print-table td {
+              text-align: left !important;
+            }
+
+            .text-center {
+              text-align: center !important;
+            }
+
+            .cell-wrap {
+              white-space: normal !important;
+              word-wrap: break-word !important;
+              max-width: 250px !important;
+            }
+
+            .cell-answers {
+              white-space: normal !important;
+              word-wrap: break-word !important;
+              max-width: 150px !important;
+              letter-spacing: 0.05em !important;
+            }
+
+            * {
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+          }
+        `
+      }} />
+
+      {/* ===== SCREEN: Kontrol & Header ===== */}
       <Card bg={cardBg} shadow="lg" borderRadius="xl" overflow="hidden" className="no-print" mb={8}>
         <Box bg={headerBg} p={6} color="white">
           <Flex justify="space-between" align="center" direction={{ base: "column", md: "row" }} gap={4}>
@@ -302,8 +344,7 @@ export default function ReportPage() {
         </CardBody>
       </Card>
 
-      {/* Printable official header (Hidden on screen) */}
-      {/* FIX: Hapus mb={6}, margin dikontrol via CSS print */}
+      {/* ===== PRINT: Header Resmi ===== */}
       <Box display="none" className="print-header" textAlign="center">
         <h1>LAPORAN HASIL KUESIONER KEPUASAN MASYARAKAT</h1>
         <h2>PUSKESMAS LAPADDE</h2>
@@ -312,7 +353,7 @@ export default function ReportPage() {
         </Text>
       </Box>
 
-      {/* FIX: Tambah className "print-table-wrap" agar tidak dipisah dari header */}
+      {/* ===== TABEL ===== */}
       <Card bg={cardBg} shadow="md" borderRadius="xl" overflow="hidden" p={6} className="print-table-wrap">
         {loading ? (
           <Flex justify="center" align="center" minH="200px">
@@ -326,35 +367,7 @@ export default function ReportPage() {
         ) : (
           <Box>
             <TableContainer overflowX="auto">
-              <Table variant="simple" size="md">
-                <style dangerouslySetInnerHTML={{
-                  __html: `
-                  @media screen {
-                    th {
-                      font-weight: bold;
-                      text-transform: uppercase;
-                      font-size: 0.8rem;
-                      letter-spacing: 0.05em;
-                    }
-                  }
-                `}} />
-                <style dangerouslySetInnerHTML={{
-                  __html: `
-                  .cell-wrap {
-                    white-space: normal;
-                    word-wrap: break-word;
-                    max-width: 250px;
-                  }
-                `}} />
-                <style dangerouslySetInnerHTML={{
-                  __html: `
-                  .cell-answers {
-                    white-space: normal;
-                    word-wrap: break-word;
-                    max-width: 150px;
-                    letter-spacing: 0.05em;
-                  }
-                `}} />
+              <Table variant="simple" size="md" className="print-table">
                 <Thead bg={tableHeaderBg}>
                   <Tr>
                     <Th width="50px" className="text-center">No</Th>
