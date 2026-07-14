@@ -8,7 +8,7 @@ import { SWRProvider } from "./swr/swr-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Selamat Datang",
+  title: "Kuesioner Kepuasan Layanan",
 };
 
 export default function RootLayout({ children }) {
