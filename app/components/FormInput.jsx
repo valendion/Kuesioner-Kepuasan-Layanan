@@ -90,7 +90,7 @@ const FormInput = ({ isLoading, handleForm, validation }) => {
           <option value="BURUH">BURUH</option>option
           <option value="PENSIUNAN">PENSIUNAN</option>option
           <option value="BIDAN">BIDAN</option>option
-          <option value="KARYAWAN_SWASTA">KARYAWAN SWASTA</option>
+          <option value="KARYAWAN SWASTA">KARYAWAN SWASTA</option>
           <option value="WIRAUSAHA">WIRAUSAHA</option>option
           <option value="PNS">PNS</option>
           <option value="TNI">TNI</option>
