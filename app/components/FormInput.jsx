@@ -86,7 +86,7 @@ const FormInput = ({ isLoading, handleForm, validation }) => {
         >
           <option value="PELAJAR">PELAJAR</option>
           <option value="MAHASISWA">MAHASISWA</option>
-          <option value="IBU_RUMAH_TANGGA">IBU RUMAH TANGGA</option>option
+          <option value="IBU RUMAH TANGGA">IBU RUMAH TANGGA</option>option
           <option value="BURUH">BURUH</option>option
           <option value="PENSIUNAN">PENSIUNAN</option>option
           <option value="BIDAN">BIDAN</option>option
